@@ -1,0 +1,193 @@
+.location-portal {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  padding-top: 80px;
+}
+
+/* Institutional Geographical Header */
+.location-header {
+  height: 40vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 48px;
+}
+
+.location-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+  background: var(--primary);
+  filter: blur(150px);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.location-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.location-header p {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Location Matrix Grid */
+.location-matrix-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px 80px 48px;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.contact-info-field {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background: #fff;
+  border-radius: 40px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.info-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.address-text, .phone-text, .email-text {
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.btn-secondary.direction-btn {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 100px;
+  background: var(--primary-low);
+  color: var(--primary);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary.direction-btn:hover { background: var(--primary); color: #fff; }
+
+/* Custom Map Styling */
+.map-field {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 40px;
+  position: relative;
+  background: var(--bg-darker);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-xl);
+}
+
+.map-frame {
+  height: 100%;
+  min-height: 500px;
+  width: 100%;
+  filter: grayscale(0.5) contrast(1.1);
+}
+
+/* Hours Grid Tooling */
+.hours-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hour-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.dot { flex: 1; border-bottom: 1px dotted var(--border-light); margin: 0 16px; }
+.hour-row.disabled { opacity: 0.3; text-decoration: line-through; }
+
+/* Institutional Badge Tooling */
+.institutional-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-light);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Narrative Anchor */
+.narrative-card {
+  max-width: 1000px;
+  margin: 40px auto 120px auto;
+  padding: 80px;
+  text-align: center;
+  background: #fff;
+  border-radius: 40px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.narrative-card h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 950; margin-bottom: 24px; }
+.narrative-card p { font-size: 1.125rem; color: var(--text-muted); margin-bottom: 48px; line-height: 1.6; }
+
+@media (max-width: 1024px) {
+  .location-grid { grid-template-columns: 1fr; }
+  .location-header h1 { font-size: 2.5rem; }
+  .contact-info-field, .narrative-card { padding: 40px; }
+  .narrative-card h2 { font-size: 1.75rem; }
+}
+
+@media (max-width: 480px) {
+  .location-matrix-container { padding: 0 24px 80px 24px; }
+  .location-header h1 { font-size: 2rem; }
+  .hour-row { font-size: 0.8125rem; }
+}
