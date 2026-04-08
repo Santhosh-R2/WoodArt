@@ -16,7 +16,7 @@ connectDB();
 
 // Multi-Origin Management (Admin & Customer Portal)
 const allowedOrigins = [
-  'http://localhost:5173',
+  'https://vishwamcarvings.vercel.app',
   'http://localhost:5174',
   process.env.FRONTEND_URL,
   process.env.ADMIN_URL
