@@ -15,7 +15,13 @@ const app = express();
 connectDB();
 
 // Multi-Origin Management (Admin & Customer Portal)
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL
+].filter(Boolean);
+
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -49,6 +55,10 @@ app.get('/', (req, res) => {
 // Port Configuration
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`\x1b[36m🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}\x1b[0m`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`\x1b[36m🚀 Server running on port ${PORT}\x1b[0m`);
+    });
+}
+
+module.exports = app;
