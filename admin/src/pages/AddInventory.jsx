@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PackagePlus, Loader2, CheckCircle2, AlertCircle, ImageIcon, X } from 'lucide-react';
 import './AddInventory.css';
 
+import api from '../utils/api';
+
 const AddInventory = () => {
   const [formData, setFormData] = useState({
     doorName: '',
@@ -51,18 +53,12 @@ const AddInventory = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('http://localhost:5000/api/doors', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          doorImage: preview
-        })
+      const response = await api.post('/doors', {
+        ...formData,
+        doorImage: preview
       });
 
-      const data = await response.json();
+      const data = response.data;
 
       if (data.success) {
         setStatus({ type: 'success', message: 'Door added successfully to inventory.' });
@@ -73,7 +69,7 @@ const AddInventory = () => {
         setStatus({ type: 'error', message: data.message || 'Failed to add door.' });
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'Server connection failed. Is the backend running?' });
+      setStatus({ type: 'error', message: error.response?.data?.message || 'Server connection failed. Is the backend running?' });
     } finally {
       setIsLoading(false);
     }

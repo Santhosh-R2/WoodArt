@@ -15,6 +15,8 @@ import {
 import { motion } from 'framer-motion';
 import './Dashboard.css';
 
+import api from '../utils/api';
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({ stats: null, recentActivity: [] });
@@ -26,12 +28,8 @@ const Dashboard = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/stats', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const result = await response.json();
+      const response = await api.get('/admin/stats');
+      const result = response.data;
       if (result.success) {
         setData({ stats: result.stats, recentActivity: result.recentActivity });
       }

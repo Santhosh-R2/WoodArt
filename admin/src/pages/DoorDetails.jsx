@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import './DoorDetails.css';
 
+import api from '../utils/api';
+
 const DoorDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,8 +41,8 @@ const DoorDetails = () => {
 
   const fetchDoorDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/doors/${id}`);
-      const data = await response.json();
+      const response = await api.get(`/doors/${id}`);
+      const data = response.data;
       if (data.success) {
         setDoor(data.data);
         setEditData(data.data);
@@ -68,12 +70,8 @@ const DoorDetails = () => {
   const handleUpdate = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/doors/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editData)
-      });
-      const data = await response.json();
+      const response = await api.put(`/doors/${id}`, editData);
+      const data = response.data;
       if (data.success) {
         setDoor(data.data);
         setIsEditing(false);
@@ -81,7 +79,7 @@ const DoorDetails = () => {
         setTimeout(() => setStatus({ type: '', message: '' }), 3000);
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'Failed to synchronize metadata.' });
+      setStatus({ type: 'error', message: error.response?.data?.message || 'Failed to synchronize metadata.' });
     } finally {
       setIsLoading(false);
     }
@@ -90,15 +88,13 @@ const DoorDetails = () => {
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/doors/${id}`, {
-        method: 'DELETE'
-      });
-      const data = await response.json();
+      const response = await api.delete(`/doors/${id}`);
+      const data = response.data;
       if (data.success) {
         navigate('/inventory/view');
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'Failed to purge artisanal entry.' });
+      setStatus({ type: 'error', message: error.response?.data?.message || 'Failed to purge artisanal entry.' });
       setIsLoading(false);
       setShowDeleteModal(false);
     }

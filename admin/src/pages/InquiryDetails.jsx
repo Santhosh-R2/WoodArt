@@ -18,6 +18,8 @@ import {
   Trash2
 } from 'lucide-react';
 
+import api from '../utils/api';
+
 const InquiryDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,12 +33,8 @@ const InquiryDetails = () => {
 
   const fetchInquiryDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
+      const response = await api.get(`/inquiries/${id}`);
+      const data = response.data;
       if (data.success) {
         setInquiry(data.inquiry);
       }
@@ -50,15 +48,8 @@ const InquiryDetails = () => {
   const updateStatus = async (newStatus) => {
     setUpdating(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${id}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ status: newStatus })
-      });
-      const data = await response.json();
+      const response = await api.put(`/inquiries/${id}/status`, { status: newStatus });
+      const data = response.data;
       if (data.success) {
         setInquiry({ ...inquiry, status: newStatus });
       }
@@ -74,13 +65,8 @@ const InquiryDetails = () => {
     
     setUpdating(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/inquiries/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
+      const response = await api.delete(`/inquiries/${id}`);
+      const data = response.data;
       if (data.success) {
         navigate('/inquiries');
       }

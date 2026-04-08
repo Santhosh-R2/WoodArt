@@ -5,6 +5,8 @@ import { Mail, Lock, Eye, EyeOff, Loader2, DoorOpen, ArrowRight } from 'lucide-r
 import './Login.css';
 import showcaseImg from '../assets/login-showcase.png';
 
+import api from '../utils/api';
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,13 +25,8 @@ function Login() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/admin-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
+      const response = await api.post('/users/admin-login', { email, password });
+      const data = response.data;
 
       if (data.success) {
         localStorage.setItem('token', data.token); // Store token for future requests
@@ -38,7 +35,7 @@ function Login() {
         setError(data.message || 'Invalid institutional credentials');
       }
     } catch (err) {
-      setError('Institutional Auth Sync failed. Please check server connection.');
+      setError(err.response?.data?.message || 'Institutional Auth Sync failed. Please check server connection.');
     } finally {
       setIsLoading(false);
     }
