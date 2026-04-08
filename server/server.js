@@ -15,24 +15,24 @@ const app = express();
 connectDB();
 
 // Multi-Origin Management (Admin & Customer Portal)
-const allowedOrigins = [
-  'https://vishwamcarvings.vercel.app',
-  'http://localhost:5174',
-  process.env.FRONTEND_URL,
-  process.env.ADMIN_URL
-].filter(Boolean);
+// const allowedOrigins = [
+//   'https://vishwamcarvings.vercel.app',
+//   'http://localhost:5174',
+//   process.env.FRONTEND_URL,
+//   process.env.ADMIN_URL
+// ].filter(Boolean);
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Cross-Origin Access Restricted'));
-    }
-  },
-  credentials: true
-}));
-
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Cross-Origin Access Restricted'));
+//     }
+//   },
+//   credentials: true
+// }));
+app.use(cors());
 // Apply performance logger
 app.use(reqLogger);
 
