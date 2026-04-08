@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://wood-art-drab.vercel.app/api',
 });
 
 // Request interceptor to add auth token (Artisanal Identity Access Control)
