@@ -91,7 +91,7 @@
 }
 
 .table-header-locks {
-  grid-template-columns: 1.5fr 1fr 1fr 0.6fr 0.4fr;
+  grid-template-columns: 1.6fr 1.2fr 1fr 0.8fr;
 }
 
 .inquiry-header-locks {
@@ -120,7 +120,7 @@
 }
 
 .identity-node {
-  grid-template-columns: 1.5fr 1fr 1fr 0.6fr 0.4fr;
+  grid-template-columns: 1.6fr 1.2fr 1fr 0.8fr;
 }
 
 .inquiry-node {
@@ -279,9 +279,11 @@
 }
 
 .clearance-badge.high {
-  background: rgba(46, 204, 113, 0.05);
+  background: rgba(46, 204, 113, 0.1);
   color: #2ecc71;
-  border: 1px solid rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.1);
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
 }
 
 .clearance-badge.low {
@@ -409,26 +411,25 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
+
+  .node-integration { border-bottom: none; }
 
   /* Mobilizing Labels */
-  .node-contact::before { content: "COMMUNICATION"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.1em; }
-  .node-asset::before { content: "ASSET"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
-  .node-date::before { content: "REGISTERED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
-  .node-state::before { content: "STATUS"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
-  .node-clearance::before { content: "SECURITY"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
-  .node-integration::before { content: "INTEGRATED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+  .node-contact::before { content: "COMMUNICATION"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  .node-asset::before { content: "ASSET"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  .node-date::before { content: "REGISTERED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  .node-state::before { content: "STATUS"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  .node-clearance::before { content: "SECURITY"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  .node-integration::before { content: "INTEGRATED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
 
-  .node-actions, .node-actions-right {
-    justify-content: center;
-    border-top: 1px solid var(--border-light);
-    padding-top: 16px;
-  }
+  .identity-node:last-child { margin-bottom: 20px; }
 
-  .btn-dive-executive {
-    width: 100%;
-    height: 48px;
-    justify-content: center;
+  .clearance-badge {
+    padding: 6px 12px;
+    font-size: 0.6rem;
   }
 
   .hub-pagination-instrumentation {

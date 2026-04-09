@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, 
   MessageSquare, 
   User, 
   Phone, 
   Mail, 
   MapPin, 
-  Tag, 
-  CreditCard, 
   Clock, 
   CheckCircle2, 
   AlertCircle,
   Loader2,
   ShieldCheck,
-  Trash2
+  Trash2,
+  DoorOpen,
+  ChevronLeft,
+  ExternalLink,
+  PhoneCall,
+  MessageCircle
 } from 'lucide-react';
 
 import api from '../utils/api';
+import './InquiryDetails.css';
 
 const InquiryDetails = () => {
   const { id } = useParams();
@@ -41,7 +44,7 @@ const InquiryDetails = () => {
     } catch (error) {
       console.error("Institutional Detail Sync failed:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 1000); // Cinematic transition
     }
   };
 
@@ -61,8 +64,6 @@ const InquiryDetails = () => {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("CAUTION: Permanent removal of the institutional registry entry. Proceed?")) return;
-    
     setUpdating(true);
     try {
       const response = await api.delete(`/inquiries/${id}`);
@@ -80,17 +81,23 @@ const InquiryDetails = () => {
   if (loading) {
     return (
       <div className="loading-portal">
-        <Loader2 size={48} className="animate-spin text-primary" />
-        <p>Synchronizing Institutional Registry...</p>
+        <div className="loader-icon-wrapper">
+          <Loader2 size={120} className="animate-spin text-primary opacity-20" strokeWidth={1} />
+          <DoorOpen size={48} className="door-loader-icon" strokeWidth={1.5} />
+        </div>
+        <p>Retrieving Institutional Dossier...</p>
       </div>
     );
   }
 
   if (!inquiry) {
     return (
-      <div className="page-container text-center">
-        <h2>Institutional Entry Not Found</h2>
-        <button onClick={() => navigate('/inquiries')} className="btn-primary mt-4">Return to Registry</button>
+      <div className="loading-portal">
+        <AlertCircle size={48} className="text-primary mb-4" />
+        <h2 className="archival-title" style={{ fontSize: '2rem' }}>Entry Not Identified</h2>
+        <button onClick={() => navigate('/inquiries')} className="btn-dive-executive mt-6">
+          RETURN TO REGISTRY
+        </button>
       </div>
     );
   }
@@ -98,158 +105,151 @@ const InquiryDetails = () => {
   const { user, door, message, status, createdAt } = inquiry;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }} 
-      animate={{ opacity: 1, y: 0 }} 
-      className="page-container"
-    >
-      {/* Dossier Header */}
-      <div className="page-header" style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <button onClick={() => navigate('/inquiries')} className="btn-ghost" style={{ padding: '8px' }}>
-          <ArrowLeft size={20} />
-        </button>
-        <div>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 900, fontFamily: "'Playfair Display', serif", letterSpacing: '-0.02em', marginBottom: '4px' }}>Inquiry Dossier</h2>
-          <p style={{ color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.75rem' }}>Administrative deep-dive into artisanal request #{id.slice(-6).toUpperCase()}</p>
-        </div>
-      </div>
-
-      <div className="dossier-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '40px', alignItems: 'start' }}>
+    <div className="inquiry-dossier-container">
+      <div className="dossier-split-view">
         
-        {/* Left Column: Visual & Technical Asset */}
-        <div className="dossier-visual">
-          <div className="glass-card" style={{ padding: '32px', position: 'relative' }}>
-            <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '32px', background: 'var(--bg-darker)', border: '1px solid var(--border-light)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
-              {door?.doorImage ? (
-                <img src={door.doorImage} alt={door.doorName} style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '600px', objectFit: 'cover' }} />
-              ) : (
-                <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)' }}>
-                  Visual Asset Missing
-                </div>
-              )}
-            </div>
+        {/* Left: Cinematic Asset Anchor */}
+        <section className="dossier-asset-anchor">
+          <motion.div
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="inquiry-hero-wrapper"
+          >
+            {door?.doorImage ? (
+              <img src={door.doorImage} alt={door.doorName} className="inquiry-prime-shot" />
+            ) : (
+              <div className="inquiry-missing-asset">
+                 <DoorOpen size={64} className="opacity-10" />
+                 <span>Visual Asset Depleted</span>
+              </div>
+            )}
+            <div className="inquiry-lighting-overlay" />
             
-            <div className="asset-details">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{door?.doorName || 'Legacy Collection'}</h3>
-                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>
-                  {door?.amount ? `₹${door.amount.toLocaleString()}` : 'Valuation Pending'}
-                </span>
-              </div>
-              <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                {door?.description || 'Institutional specification for this collection is currently unavailable.'}
-              </p>
+            <div className="dossier-id-badge">
+              <ShieldCheck size={14} />
+              <span>DOSSIER ID: {id.slice(-6).toUpperCase()}</span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </section>
 
-        {/* Right Column: Patron & Communication Identity */}
-        <div className="dossier-meta" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          
-          {/* Patron Identification */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', borderBottom: '1px solid var(--border-light)', paddingBottom: '16px' }}>
-              <User size={20} className="text-primary" />
-              <h3 style={{ fontWeight: 600 }}>Patron Identity</h3>
-            </div>
+        {/* Right: Instrumentation Side */}
+        <section className="dossier-instrument-pane">
+          <nav className="dossier-top-nav">
+            <button onClick={() => navigate('/inquiries')} className="dossier-back-btn">
+              <ChevronLeft size={20} />
+            </button>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--surface-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                   <ShieldCheck size={18} />
-                </div>
-                <div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Full Name</div>
-                  <div style={{ fontWeight: 600 }}>{user?.name || 'Anonymous Artisan'}</div>
-                </div>
-              </div>
+            <div className="dossier-action-nexus">
+               <button 
+                onClick={() => window.open(`https://wa.me/${user?.phone?.replace(/\D/g,'')}`, '_blank')}
+                className="btn-whatsapp-direct"
+               >
+                 <MessageCircle size={18} />
+                 <span>WHATSAPP</span>
+               </button>
+            </div>
+          </nav>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-dim)', fontSize: '0.75rem', marginBottom: '4px' }}>
-                    <Mail size={12} /> Email
-                  </div>
-                  <div style={{ fontSize: '0.9rem', wordBreak: 'break-all' }}>{user?.email || 'N/A'}</div>
-                </div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-dim)', fontSize: '0.75rem', marginBottom: '4px' }}>
-                    <Phone size={12} /> Phone
-                  </div>
-                  <div style={{ fontSize: '0.9rem' }}>{user?.phone || 'N/A'}</div>
-                </div>
-              </div>
+          <div className="dossier-content-scroller">
+            <header className="dossier-header-block">
+              <div className="dossier-tag">Acquisition Request</div>
+              <h1 className="dossier-main-title">{door?.doorName || 'Legacy Collection'}</h1>
+            </header>
 
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-dim)', fontSize: '0.75rem', marginBottom: '4px' }}>
-                  <MapPin size={12} /> Registry Address
+            {/* Patron Identification */}
+            <div className="dossier-node">
+              <div className="node-title-row">
+                 <User size={16} className="text-primary" />
+                 <h3>Patron Identity</h3>
+              </div>
+              
+              <div className="patron-identity-card">
+                <div className="identity-row-main">
+                   <div className="identity-glyph">
+                      {user?.name?.charAt(0) || 'A'}
+                   </div>
+                   <div className="patron-core-info">
+                      <h4>{user?.name || 'Anonymous Artisan'}</h4>
+                      <p>Registry Authenticated</p>
+                   </div>
                 </div>
-                <div style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>{user?.address || 'Institutional address not logged.'}</div>
+
+                <div className="patron-contact-grid">
+                   <div className="contact-node">
+                      <label>Email Signature</label>
+                      <span>{user?.email || 'Archive Only'}</span>
+                   </div>
+                   <div className="contact-node">
+                      <label>Voice Line</label>
+                      <span>{user?.phone || 'Not Logged'}</span>
+                   </div>
+                </div>
+
+                <div className="contact-node">
+                   <label>Registry Address</label>
+                   <span style={{ lineHeight: 1.5 }}>{user?.address || 'Institutional address not logged.'}</span>
+                </div>
               </div>
             </div>
+
+            {/* Message Buffer */}
+            <div className="dossier-node">
+              <div className="node-title-row">
+                 <MessageSquare size={16} className="text-primary" />
+                 <h3>Message Buffer</h3>
+              </div>
+              
+              <div className="message-buffer-vault">
+                {message}
+              </div>
+
+              <div className="dossier-footer-meta">
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Clock size={14} />
+                    <span>LOGGED: {new Date(createdAt).toLocaleString()}</span>
+                 </div>
+                 
+                 <div className="v2-status-pill">
+                    <div className={`v2-dot ${status === 'pending' ? 'active' : ''}`} />
+                    <span>{status === 'pending' ? 'PENDING REVIEW' : 'ENGAGED'}</span>
+                 </div>
+              </div>
+            </div>
+
+            {/* Administrative Console */}
+            <div className="dossier-console">
+               <div className="console-btn-row">
+                  <button 
+                    onClick={() => updateStatus(status === 'pending' ? 'contacted' : 'pending')}
+                    disabled={updating}
+                    className="btn-status-toggle"
+                  >
+                    {updating ? <Loader2 size={18} className="animate-spin" /> : status === 'pending' ? 'MARK ENGAGED' : 'MARK PENDING'}
+                  </button>
+                  <button 
+                    onClick={() => window.location.href = `tel:${user?.phone}`}
+                    className="btn-call-direct"
+                  >
+                    <PhoneCall size={16} />
+                    <span>DIRECT CALL</span>
+                  </button>
+               </div>
+               
+               <button 
+                 onClick={handleDelete}
+                 disabled={updating}
+                 className="btn-purge-registry"
+               >
+                 {updating ? <Loader2 size={14} className="animate-spin" /> : <><Trash2 size={14} /> PURGE REGISTRY</>}
+               </button>
+            </div>
+
           </div>
+        </section>
 
-          {/* Communication Token */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', borderBottom: '1px solid var(--border-light)', paddingBottom: '16px' }}>
-              <MessageSquare size={20} className="text-primary" />
-              <h3 style={{ fontWeight: 600 }}>Message Buffer</h3>
-            </div>
-            
-            <div style={{ padding: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', fontSize: '0.95rem', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '16px' }}>
-              "{message}"
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Clock size={14} />
-                {new Date(createdAt).toLocaleString()}
-              </div>
-              <div>
-                {status === 'pending' ? (
-                  <span style={{ color: '#facc15', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
-                    <AlertCircle size={14} /> PENDING
-                  </span>
-                ) : (
-                  <span style={{ color: '#4ade80', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
-                    <CheckCircle2 size={14} /> ENGAGED
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Institutional Controls */}
-          <div className="glass-card" style={{ padding: '24px', background: 'var(--primary-low)', border: '1px solid var(--border-primary)' }}>
-             <h3 style={{ fontWeight: 600, marginBottom: '16px', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Administrative Controls</h3>
-             <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-                <button 
-                  onClick={() => updateStatus(status === 'pending' ? 'contacted' : 'pending')}
-                  disabled={updating}
-                  className="btn-primary" 
-                  style={{ flex: 1, fontSize: '0.85rem' }}
-                >
-                  {updating ? <Loader2 size={18} className="animate-spin" /> : status === 'pending' ? 'Mark Contacted' : 'Mark Pending'}
-                </button>
-                <button 
-                  onClick={() => window.open(`https://wa.me/${user?.phone?.replace(/\D/g,'')}`, '_blank')}
-                  className="btn-ghost" 
-                  style={{ flex: 1, fontSize: '0.85rem', background: 'rgba(37, 211, 102, 0.1)', borderColor: 'rgba(37, 211, 102, 0.3)', color: '#25D366' }}
-                >
-                  WhatsApp
-                </button>
-             </div>
-             <button 
-                onClick={handleDelete}
-                disabled={updating}
-                className="btn-ghost" 
-                style={{ width: '100%', fontSize: '0.8rem', borderColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', height: '40px' }}
-              >
-                {updating ? <Loader2 size={14} className="animate-spin" /> : <><Trash2 size={14} /> Purge Registry</>}
-              </button>
-          </div>
-        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

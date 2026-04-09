@@ -102,7 +102,6 @@ export const ManageUsers = () => {
           <div className="lock-label">Communication Channel</div>
           <div className="lock-label">Clearance State</div>
           <div className="lock-label">Integration Date</div>
-          <div className="lock-label">Actions</div>
         </div>
 
         <div className="identity-stack">
@@ -159,9 +158,6 @@ export const ManageUsers = () => {
                 <span>{new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}</span>
               </div>
 
-              <div className="node-actions">
-                <button className="node-action-btn"><MoreHorizontal size={18} /></button>
-              </div>
             </motion.div>
           ))}
         </div>
