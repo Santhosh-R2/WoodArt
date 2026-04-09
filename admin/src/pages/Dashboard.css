@@ -139,6 +139,11 @@
   display: flex;
   align-items: center;
   gap: 28px;
+  cursor: pointer;
+}
+
+.support-node.clickable {
+  cursor: pointer;
 }
 
 .support-icon {

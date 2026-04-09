@@ -94,7 +94,7 @@ const Dashboard = () => {
         </motion.div>
 
         <div className="support-nodes">
-          <motion.div whileHover={{ x: 8 }} className="support-node glass-card">
+          <motion.div whileHover={{ x: 8 }} className="support-node glass-card" onClick={() => navigate('/users/manage')}>
             <div className="support-icon"><Users size={20} /></div>
             <div className="support-content">
               <label>Artisan Core</label>
