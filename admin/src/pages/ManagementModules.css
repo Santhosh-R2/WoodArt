@@ -176,7 +176,7 @@
   letter-spacing: 0.1em;
 }
 
-.node-contact {
+.contact-info-stack {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -276,6 +276,7 @@
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.05em;
+  
 }
 
 .clearance-badge.high {
@@ -284,12 +285,14 @@
   border: 1px solid rgba(46, 204, 113, 0.3);
   box-shadow: 0 0 15px rgba(46, 204, 113, 0.1);
   text-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+  padding:6px;
 }
 
 .clearance-badge.low {
   background: rgba(231, 76, 60, 0.05);
   color: #e74c3c;
   border: 1px solid rgba(231, 76, 60, 0.2);
+  padding:6px;
 }
 
 .node-integration {
@@ -419,6 +422,16 @@
 
   /* Mobilizing Labels */
   .node-contact::before { content: "COMMUNICATION"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
+  
+  .contact-info-stack {
+     align-items: flex-end;
+     text-align: right;
+  }
+
+  .contact-item {
+     font-size: 0.75rem;
+     justify-content: flex-end;
+  }
   .node-asset::before { content: "ASSET"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
   .node-date::before { content: "REGISTERED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }
   .node-state::before { content: "STATUS"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.15em; }

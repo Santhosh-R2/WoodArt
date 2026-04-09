@@ -128,27 +128,27 @@ export const ManageUsers = () => {
               </div>
 
               <div className="node-contact">
-                <div className="contact-item">
-                  <Mail size={14} className="text-primary" />
-                  <span>{user.email}</span>
-                </div>
-                {user.phone && (
+                <div className="contact-info-stack">
                   <div className="contact-item">
-                    <Phone size={14} />
-                    <span>{user.phone}</span>
+                    <Mail size={14} className="text-primary" />
+                    <span>{user.email}</span>
                   </div>
-                )}
+                  {user.phone && (
+                    <div className="contact-item">
+                      <Phone size={14} />
+                      <span>{user.phone}</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="node-clearance">
                 {user.isProfileComplete ? (
                   <div className="clearance-badge high">
-                    <CheckCircle2 size={12} />
                     <span>FULL CLEARANCE</span>
                   </div>
                 ) : (
                   <div className="clearance-badge low">
-                    <XCircle size={12} />
                     <span>FRAGMENTED</span>
                   </div>
                 )}
