@@ -5,6 +5,14 @@
   background: var(--bg-dark);
 }
 
+@media (max-width: 900px) {
+  .gallery-v2-container {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
 .split-view {
   display: flex;
   height: 100%;
@@ -423,9 +431,60 @@
 }
 
 @media (max-width: 900px) {
-  .split-view { flex-direction: column; overflow-y: auto; height: auto; }
-  .asset-side-anchor { height: 400px; }
-  .instrument-side-pane { width: 100%; height: auto; }
-  .v2-metadata-content { padding: 40px; }
-  .v2-top-command { position: absolute; width: 100%; top: 0; }
+  .split-view { flex-direction: column; height: auto; }
+  .asset-side-anchor { height: 50vh; min-height: 350px; }
+  .instrument-side-pane { width: 100%; border-left: none; border-top: 1px solid var(--border-light); }
+  
+  .v2-top-command { 
+    position: sticky; 
+    top: 0; 
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .v2-metadata-content { padding: 40px 24px; }
+  .v2-archival-title, .v2-title-input { font-size: 2rem; }
+  
+  .v2-valuation-node { margin: 32px 0; padding: 24px; }
+  .v2-amount-static, .v2-amount-input { font-size: 2rem; }
+  .node-value-box { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  /* Specialized Narrative Scroll */
+  .v2-narrative-node {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+  }
+
+  .v2-narrative-text, .v2-narrative-textarea {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 12px;
+  }
+
+  /* Custom Professional Scrollbar for Narrative */
+  .v2-narrative-text::-webkit-scrollbar,
+  .v2-narrative-textarea::-webkit-scrollbar {
+    width: 4px;
+  }
+  .v2-narrative-text::-webkit-scrollbar-track,
+  .v2-narrative-textarea::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .v2-narrative-text::-webkit-scrollbar-thumb,
+  .v2-narrative-textarea::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .v2-archival-title, .v2-title-input { font-size: 1.75rem; }
+  .v2-amount-static, .v2-amount-input { font-size: 1.75rem; }
+  .v2-image-trigger { left: 20px; bottom: 20px; padding: 12px 20px; }
+  .institution-badge-v2 { left: 20px; top: 20px; }
 }
