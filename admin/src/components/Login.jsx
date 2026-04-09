@@ -15,6 +15,13 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
+
   // Hardcoded Credentials
   const ADMIN_EMAIL = "admin@wooddoor.com";
   const ADMIN_PASSWORD = "admin123";

@@ -19,6 +19,13 @@ const AdminLayout = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
+
   const confirmLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');

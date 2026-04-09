@@ -1,4 +1,4 @@
-.identity-hub-wrapper {
+.identity-hub-wrapper, .inquiry-hub-wrapper {
   padding: 60px;
   max-width: 1400px;
   margin: 0 auto;
@@ -377,6 +377,67 @@
 }
 
 @media (max-width: 1024px) {
-  .identity-hub-header { flex-direction: column; align-items: flex-start; }
+  .identity-hub-wrapper, .inquiry-hub-wrapper { padding: 40px 20px; }
+  .identity-hub-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .identity-header-main .archival-title { font-size: 3rem; }
   .hub-search { width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .identity-hub-header { margin-bottom: 40px; }
+  .identity-header-main .archival-title { font-size: 2.25rem; }
+  
+  .table-header-locks, .inquiry-header-locks {
+    display: none; /* Hide bureaucratic headers on mobile */
+  }
+
+  .identity-node, .inquiry-node {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .node-identity {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .node-contact, .node-asset, .node-date, .node-state, .node-clearance, .node-integration {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Mobilizing Labels */
+  .node-contact::before { content: "COMMUNICATION"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; letter-spacing: 0.1em; }
+  .node-asset::before { content: "ASSET"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+  .node-date::before { content: "REGISTERED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+  .node-state::before { content: "STATUS"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+  .node-clearance::before { content: "SECURITY"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+  .node-integration::before { content: "INTEGRATED"; font-size: 0.6rem; color: var(--text-dim); font-weight: 800; }
+
+  .node-actions, .node-actions-right {
+    justify-content: center;
+    border-top: 1px solid var(--border-light);
+    padding-top: 16px;
+  }
+
+  .btn-dive-executive {
+    width: 100%;
+    height: 48px;
+    justify-content: center;
+  }
+
+  .hub-pagination-instrumentation {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .instr-btn {
+    width: 100%;
+  }
 }
