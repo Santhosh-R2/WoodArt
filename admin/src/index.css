@@ -1,34 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700;900&display=swap');
 
 :root {
-  /* Core Palette (Artisanal Wood Theme) */
-  --primary: #6B4F3B; /* Rich Artisanal Brown */
-  --primary-hover: #7D5D46;
-  --primary-low: rgba(107, 79, 59, 0.1);
-  --primary-glow: rgba(107, 79, 59, 0.2);
+  /* Core Palette (Noir Architectural Theme) */
+  --primary: #C5A059; /* Brass/Gold Accent */
+  --primary-hover: #D4B67C;
+  --primary-low: rgba(197, 160, 89, 0.1);
+  --primary-glow: rgba(197, 160, 89, 0.2);
   
-  /* Backgrounds (Light/Warm) */
-  --bg-dark: #FDFBF7; /* Off-White/Cream */
-  --bg-darker: #F5F1EA; /* Soft Beige */
-  --surface: rgba(0, 0, 0, 0.025);
-  --surface-hover: rgba(0, 0, 0, 0.05);
+  /* Backgrounds (Noir) */
+  --bg-dark: #0A0908; /* Deep Obsidian */
+  --bg-darker: #050505; /* Black */
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.07);
   
   /* Typography */
-  --text-main: #1A1512; /* Deep Timber Charcoal */
-  --text-muted: #665C54;
-  --text-dim: #998C82;
+  --text-main: #FFFFFF; /* Pure White */
+  --text-muted: #A09890; /* Warm Gray */
+  --text-dim: #605850; /* Timber Shadow */
   
   /* Borders & Shadows */
-  --border-light: rgba(0, 0, 0, 0.08);
-  --border-primary: rgba(107, 79, 59, 0.15);
-  --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 20px 50px -15px rgba(0, 0, 0, 0.12);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-primary: rgba(197, 160, 89, 0.2);
+  --shadow-lg: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 60px -15px rgba(0, 0, 0, 0.7);
 
-  font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   line-height: normal;
   font-weight: 400;
 
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text-main);
   background-color: var(--bg-dark);
 
@@ -45,8 +45,9 @@
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at 0% 0%, #F5F1EA 0%, var(--bg-dark) 100%);
+  background: radial-gradient(circle at 0% 0%, #12100E 0%, var(--bg-darker) 100%);
   overflow-x: hidden;
+  color: var(--text-main);
 }
 
 #root {
@@ -134,33 +135,60 @@ body {
 /* Cinematic Loading Portal (Institutional Universal) */
 .loading-portal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  background: radial-gradient(at 0% 0%, hsla(15, 100%, 7%, 1) 0, transparent 40%),
-              radial-gradient(at 100% 0%, hsla(38, 92%, 5%, 1) 0, transparent 40%),
-              radial-gradient(at 50% 50%, hsla(15, 100%, 2%, 1) 0, transparent 100%);
-  background-color: var(--bg-darker);
-  z-index: 2000;
+  gap: 32px;
+  background: var(--bg-darker);
+  z-index: 9999;
   color: var(--primary);
   text-align: center;
 }
 
+.loader-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.door-loader-icon {
+  position: absolute;
+  color: var(--primary);
+  animation: door-breathe 2s ease-in-out infinite;
+}
+
 .loading-portal p {
-  color: var(--text-main);
-  font-weight: 800;
+  color: var(--text-muted);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
-  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
   margin: 0;
   animation: loading-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes door-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
 @keyframes loading-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(0.95); }
-  50% { opacity: 0.9; transform: scale(1); }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 

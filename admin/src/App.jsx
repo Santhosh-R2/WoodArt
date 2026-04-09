@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import AddInventory from './pages/AddInventory';
 import ViewInventory from './pages/ViewInventory';
-import DoorDetails from './pages/DoorDetails';
+import DoorDetailsV2 from './pages/DoorDetailsV2';
 import { AddUser, ManageUsers, Inquiries } from './pages/ManagementModules';
 import InquiryDetails from './pages/InquiryDetails';
 
@@ -18,7 +18,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="inventory/add" element={<AddInventory />} />
           <Route path="inventory/view" element={<ViewInventory />} />
-          <Route path="inventory/view/:id" element={<DoorDetails />} />
+          <Route path="inventory/view/:id" element={<DoorDetailsV2 />} />
           <Route path="users/add" element={<AddUser />} />
           <Route path="users/manage" element={<ManageUsers />} />
           <Route path="inquiries" element={<Inquiries />} />

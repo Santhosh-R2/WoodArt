@@ -55,7 +55,7 @@ function Login() {
             className="showcase-logo"
           >
             <DoorOpen size={32} style={{ color: 'white' }}/>
-            <h2 style={{ color: 'white' }}>Timber Admin</h2>
+            <h2 style={{ color: 'white' }}>Viswam Carvings</h2>
           </motion.div>
           
           <motion.h3 

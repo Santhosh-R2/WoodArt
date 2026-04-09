@@ -16,7 +16,8 @@ import {
   Layers,
   Maximize2,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  DoorOpen
 } from 'lucide-react';
 import './DoorDetails.css';
 
@@ -52,7 +53,7 @@ const DoorDetails = () => {
     } catch (error) {
       console.error('Error fetching door details:', error);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => setIsLoading(false), 800); // Cinematic delay
     }
   };
 
@@ -103,7 +104,10 @@ const DoorDetails = () => {
   if (isLoading && !door) {
     return (
       <div className="loading-portal">
-        <Loader2 size={48} className="animate-spin text-primary" />
+        <div className="loader-icon-wrapper">
+          <Loader2 size={120} className="animate-spin text-primary opacity-20" strokeWidth={1} />
+          <DoorOpen size={48} className="door-loader-icon" strokeWidth={1.5} />
+        </div>
         <p>Synchronizing Institutional Data...</p>
       </div>
     );
@@ -111,169 +115,149 @@ const DoorDetails = () => {
 
   return (
     <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      className="details-container"
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      className="asset-details-executive"
     >
-      {/* Precision Navigation */}
-      <nav className="details-nav">
-        <button onClick={() => navigate('/inventory/view')} className="btn-back">
-          <ArrowLeft size={18} />
-          <span>Inventory Catalogue</span>
+      {/* Precision Navigation Overlay */}
+      <nav className="executive-nav-anchored glass-card">
+        <button onClick={() => navigate('/inventory/view')} className="nav-back-btn">
+          <ArrowLeft size={16} />
+          <span>Institutional Registry</span>
         </button>
 
-        <div className="admin-actions">
+        <div className="action-command-group">
           {!isEditing ? (
             <>
-              <button onClick={() => setIsEditing(true)} className="btn-edit">
-                <Edit3 size={18} />
-                <span>Modify Entry</span>
+              <button onClick={() => setIsEditing(true)} className="cmd-edit-btn">
+                <Edit3 size={16} />
+                <span>Modify Specifications</span>
               </button>
               <button 
                 onClick={() => setShowDeleteModal(true)} 
-                className="btn-delete"
+                className="cmd-purge-btn"
+                title="Purge Entry"
               >
-                <Trash2 size={18} />
+                <Trash2 size={16} />
               </button>
             </>
           ) : (
-            <div className="edit-controls">
-              <button onClick={() => setIsEditing(false)} className="btn-ghost">
-                <X size={18} />
-                <span>Discard</span>
+            <div className="edit-orchestration">
+              <button onClick={() => setIsEditing(false)} className="btn-ghost-small">
+                <X size={16} />
+                <span>Discard Changes</span>
               </button>
-              <button onClick={handleUpdate} className="btn-save">
-                <Save size={18} />
-                <span>Commit Changes</span>
+              <button onClick={handleUpdate} className="btn-save-prime">
+                <Save size={16} />
+                <span>Commit Registry</span>
               </button>
             </div>
           )}
         </div>
       </nav>
 
-      <main className="details-grid">
-        {/* Cinematic Asset Visualization */}
-        <section className="image-frame">
-          <motion.div 
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2 }}
-            style={{ height: '100%', position: 'relative' }}
-          >
-            <img src={isEditing ? editData.doorImage : door.doorImage} alt={door.doorName} className="hero-image" />
-            <div className="frame-overlay" />
-            
-            <AnimatePresence>
-              {isEditing && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="upload-overlay"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <div className="upload-content">
-                    <Camera size={32} />
-                    <span>Upload New Masterpiece Shot</span>
-                  </div>
-                  <input type="file" ref={fileInputRef} hidden accept="image/*" onChange={handleImageChange} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+      <main className="asset-orchestration-grid">
+        {/* Cinematic Frame: Visual Oversight */}
+        <section className="asset-visual-frame">
+          <div className="museum-display glass-card">
+            <motion.div 
+              initial={{ scale: 1.05, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="display-inner"
+            >
+              <img src={isEditing ? editData.doorImage : door.doorImage} alt={door.doorName} className="primary-asset-shot" />
+              <div className="lighting-overlay" />
+              
+              <AnimatePresence>
+                {isEditing && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="visual-update-trigger"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <div className="trigger-content">
+                      <Camera size={28} />
+                      <span>Update Asset Shot</span>
+                    </div>
+                    <input type="file" ref={fileInputRef} hidden accept="image/*" onChange={handleImageChange} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            <div className="badge-overlay">
-              <ShieldCheck size={14} />
-              <span>Institutional Certificate</span>
-            </div>
-          </motion.div>
+              <div className="institutional-seal">
+                <ShieldCheck size={14} />
+                <span>CERTIFIED ASSET</span>
+              </div>
+            </motion.div>
+          </div>
         </section>
 
-        {/* Technical Registry Pane */}
-        <section className="specs-pane">
-          <div className="spec-content">
-            <header className="spec-header">
-              <div className="title-block">
-                {isEditing ? (
-                  <div className="edit-container">
-                    <label className="edit-label">Artisanal Designation</label>
-                    <input
-                      type="text"
-                      value={editData.doorName}
-                      onChange={(e) => setEditData({ ...editData, doorName: e.target.value })}
-                      className="edit-input title-input"
-                      placeholder="Masterpiece Designation..."
-                    />
-                  </div>
-                ) : (
-                  <h3>{door.doorName}</h3>
-                )}
-              </div>
+        {/* Instrumentation Pane: Metadata Control */}
+        <section className="asset-metadata-pane">
+          <div className="metadata-scroll-content">
+            <header className="metadata-header">
+              <div className="context-label">Artisanal Designation</div>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={editData.doorName}
+                  onChange={(e) => setEditData({ ...editData, doorName: e.target.value })}
+                  className="executive-field title-field"
+                  placeholder="Designation Name..."
+                />
+              ) : (
+                <h2 className="archival-title-medium">{door.doorName}</h2>
+              )}
             </header>
 
-            <div className="price-matrix">
-              <div className="price-label">Assessed Market Value</div>
+            <div className="valuation-suite glass-card">
+              <label>Assessed Market Value</label>
               {isEditing ? (
-                <div className="price-input-wrapper">
-                  <span className="currency-prefix">₹</span>
+                <div className="input-with-currency">
+                  <span>₹</span>
                   <input
                     type="number"
                     value={editData.amount}
                     onChange={(e) => setEditData({ ...editData, amount: e.target.value })}
-                    className="edit-input valuation-input"
+                    className="executive-field valuation-field"
                     placeholder="0"
                   />
                 </div>
               ) : (
-                <div className="static-value price">₹{door.amount.toLocaleString()}</div>
+                <div className="static-valuation">₹{door.amount.toLocaleString()}</div>
               )}
             </div>
 
-            <div className="technical-insight">
+            <div className="technical-soul-block">
+              <div className="context-label">Artisanal Narrative & Tech Specs</div>
               {isEditing ? (
-                <div className="edit-container" style={{ marginTop: '24px' }}>
-                  <label className="edit-label">Technical Insight & Soul</label>
-                  <textarea
-                    value={editData.description}
-                    onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-                    className="edit-input textarea"
-                    placeholder="Describe the craftsmanship..."
-                  />
-                </div>
+                <textarea
+                  value={editData.description}
+                  onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                  className="executive-field narrative-field"
+                  placeholder="Describe the soul of this masterpiece..."
+                />
               ) : (
-                <>
-                  <h3>Technical Insight & Soul</h3>
-                  <p className="description-text">{door.description}</p>
-                </>
+                <p className="narrative-content">{door.description}</p>
               )}
             </div>
 
-            {/* <div className="specification-grid">
-              <div className="spec-item glass-card">
+            {/* <div className="attribute-matrix-grid">
+              <div className="attribute-node glass-card">
                 <Layers size={16} />
-                <div className="item-details">
+                <div className="node-info">
                   <label>Material Context</label>
-                  <span>Institutional Grade Timber</span>
+                  <span>Premium Structural Timber</span>
                 </div>
               </div>
-              <div className="spec-item glass-card">
+              <div className="attribute-node glass-card">
                 <ShieldCheck size={16} />
-                <div className="item-details">
-                  <label>Security Standard</label>
-                  <span>Certified Reinforced Core</span>
-                </div>
-              </div>
-              <div className="spec-item glass-card">
-                <Maximize2 size={16} />
-                <div className="item-details">
-                  <label>Service Registry</label>
-                  <span>Artisanal Maintenance Plan</span>
-                </div>
-              </div>
-              <div className="spec-item glass-card">
-                <Clock size={16} />
-                <div className="item-details">
-                  <label>Creation Cycle</label>
-                  <span>Bespoke on Inquiry</span>
+                <div className="node-info">
+                  <label>Security Phase</label>
+                  <span>Reinforced Core (Institutional)</span>
                 </div>
               </div>
             </div> */}
@@ -284,24 +268,24 @@ const DoorDetails = () => {
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showDeleteModal && (
-          <div className="modal-overlay">
+          <div className="modal-portal-overlay">
             <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="modal-content"
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="modal-executive glass-card"
             >
-              <div className="modal-icon">
+              <div className="modal-caution-icon">
                 <AlertTriangle size={32} />
               </div>
-              <h2>Purge Artisanal Entry?</h2>
-              <p>This action will permanently remove <strong>{door.doorName}</strong> from the institutional registry. This cannot be undone.</p>
-              <div className="modal-actions">
-                <button onClick={() => setShowDeleteModal(false)} className="btn-ghost">
-                  Keep Entry
+              <h3>Decommission Asset?</h3>
+              <p>This action will permanently purge <strong>{door.doorName}</strong> from the institutional registries. This is a definitive action.</p>
+              <div className="modal-command-row">
+                <button onClick={() => setShowDeleteModal(false)} className="btn-cancel-instr">
+                  ABORT PURGE
                 </button>
-                <button onClick={handleDelete} className="btn-delete" style={{ background: '#ff4444', color: '#fff' }}>
-                  {isLoading ? <Loader2 className="animate-spin" size={18} /> : "Definitive Purge"}
+                <button onClick={handleDelete} className="btn-purge-definitive">
+                  {isLoading ? <Loader2 className="animate-spin" size={18} /> : "CONFIRM PURGE"}
                 </button>
               </div>
             </motion.div>
@@ -309,14 +293,14 @@ const DoorDetails = () => {
         )}
       </AnimatePresence>
 
-      {/* Global Status Toast */}
+      {/* Persistence Notifications */}
       <AnimatePresence>
         {status.message && (
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
-            className={`toast ${status.type}`}
+            className={`registry-toast ${status.type}`}
           >
             {status.message}
           </motion.div>
@@ -325,5 +309,6 @@ const DoorDetails = () => {
     </motion.div>
   );
 };
+
 
 export default DoorDetails;

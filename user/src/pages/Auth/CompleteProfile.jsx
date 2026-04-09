@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import loginHero from '../../assets/login_hero.png';
 import './Auth.css';
 
+import api from '../../utils/api';
+
 const CompleteProfile = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,19 +22,10 @@ const CompleteProfile = () => {
     setIsLoading(true);
     setError('');
 
-    const token = localStorage.getItem('auth_token');
-
     try {
-      const response = await fetch('http://localhost:5000/api/users/profile', {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
+      const response = await api.put('/users/profile', formData);
 
-      const data = await response.json();
+      const data = response.data;
       if (data.success) {
         localStorage.setItem('is_profile_complete', 'true');
         navigate('/showcase');
@@ -40,7 +33,7 @@ const CompleteProfile = () => {
         setError(data.message || 'Profile synchronization failed');
       }
     } catch (err) {
-      setError('Network synchronization error');
+      setError(err.response?.data?.message || 'Network synchronization error');
     } finally {
       setIsLoading(false);
     }

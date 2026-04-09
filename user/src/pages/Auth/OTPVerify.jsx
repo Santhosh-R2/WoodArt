@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import loginHero from '../../assets/login_hero.png';
 import './Auth.css';
 
+import api from '../../utils/api';
+
 const OTPVerify = () => {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +20,9 @@ const OTPVerify = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp })
-      });
+      const response = await api.post('/users/verify-otp', { email, otp });
 
-      const data = await response.json();
+      const data = response.data;
       if (data.success) {
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('is_profile_complete', data.user.isProfileComplete);
@@ -38,7 +36,7 @@ const OTPVerify = () => {
         setError(data.message || 'Security matrix verification failed');
       }
     } catch (err) {
-      setError('Network synchronization error');
+      setError(err.response?.data?.message || 'Network synchronization error');
     } finally {
       setIsLoading(false);
     }

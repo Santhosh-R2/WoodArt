@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import './Spotlight.css';
 
+import api from '../utils/api';
+
 const Spotlight = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,8 +29,8 @@ const Spotlight = () => {
 
   const fetchDoorDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/doors/${id}`);
-      const data = await response.json();
+      const response = await api.get(`/doors/${id}`);
+      const data = response.data;
       if (data.success) {
         setDoor(data.data);
       }

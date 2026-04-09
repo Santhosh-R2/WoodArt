@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Loader2, ArrowRight, PackageSearch, Tag } from 'lucide-react';
+import { Search, Loader2, ArrowRight, PackageSearch, Tag, DoorOpen } from 'lucide-react';
 import api from '../utils/api';
 import './ViewInventory.css';
 
@@ -27,7 +27,7 @@ const ViewInventory = () => {
     } catch (error) {
       console.error('Institutional Registry Sync failure:', error);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => setIsLoading(false), 800); // Cinematic delay
     }
   };
 
@@ -38,7 +38,10 @@ const ViewInventory = () => {
   if (isLoading) {
     return (
       <div className="loading-portal">
-        <Loader2 size={48} className="animate-spin text-primary" />
+        <div className="loader-icon-wrapper">
+          <Loader2 size={120} className="animate-spin text-primary opacity-20" strokeWidth={1} />
+          <DoorOpen size={48} className="door-loader-icon" strokeWidth={1.5} />
+        </div>
         <p>Synchronizing Stock Registry...</p>
       </div>
     );
@@ -46,94 +49,106 @@ const ViewInventory = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="view-inventory-container"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="inventory-executive-wrapper"
     >
-      <div className="view-header-premium">
-        <div className="header-info">
-          <h1 className="playfair-title">Institutional Collection</h1>
-          <p className="subtitle-mono">Managing {doors.length} active masterpiece registries in the luxury timber sector.</p>
+      {/* Search & Header Orchestration */}
+      <header className="inventory-header">
+        <div className="header-titles">
+          <h1 className="archival-title">Institutional Collection</h1>
+          <p className="status-meta">Luxury Timber Asset Registry • {doors.length} Entries</p>
         </div>
-
-        <div className="search-bar-premium glass-card">
-          <Search size={18} className="text-dim" />
+        
+        <div className="search-intelligence glass-card">
+          <Search size={18} className="search-icon" />
           <input
             type="text"
-            placeholder="Search artisanal masterpiece..."
+            placeholder="Search Intelligence Node..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-      </div>
+      </header>
 
-      {filteredDoors.length > 0 ? (
-        <div className="doors-grid-premium">
-          {filteredDoors.map((door, index) => (
-            <motion.div
-              key={door._id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="masterpiece-card glass-card"
-              onClick={() => navigate(`/inventory/view/${door._id}`)}
-            >
-              <div className="card-image-wrapper">
-                <img src={door.doorImage} alt={door.doorName} loading="lazy" />
-                <div className="card-overlay-standard">
-                   <div className="inspect-badge">
-                      SPECIFICATION OVERVIEW <ArrowRight size={14} />
-                   </div>
+      {/* Registry Grid */}
+      <main className="registry-orchestration">
+        {filteredDoors.length > 0 ? (
+          <div className="masterpiece-grid">
+            {filteredDoors.map((door, index) => (
+              <motion.div
+                key={door._id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05, duration: 0.6 }}
+                className="masterpiece-node glass-card"
+                onClick={() => navigate(`/inventory/view/${door._id}`)}
+              >
+                <div className="node-preview">
+                  <img src={door.doorImage} alt={door.doorName} loading="lazy" />
+                  <div className="node-overlay">
+                    <div className="inspect-call">
+                       <span>INSPECT SPECIFICATIONS</span>
+                       <ArrowRight size={14} />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="card-content-premium">
-                <div className="card-meta">
-                   <span className="collection-tag"><Tag size={10} /> ARTISANAL SERIES</span>
+                <div className="node-details">
+                  <div className="node-meta">
+                    <Tag size={10} />
+                    <span>Artisanal Series</span>
+                  </div>
+                  <h3 className="node-title">{door.doorName}</h3>
+                  <div className="node-valuation-block">
+                    <div className="valuation-details">
+                      <label>Market Value</label>
+                      <span className="value-amount">₹{door.amount.toLocaleString()}</span>
+                    </div>
+                    <div className="status-badge">
+                      <div className="status-dot"></div>
+                      <span>ACTIVE</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="masterpiece-name">{door.doorName}</h3>
-                <div className="card-footer-luxury">
-                   <div className="valuation">
-                      <span className="label">Valuation</span>
-                      <span className="amount">₹{door.amount.toLocaleString()}</span>
-                   </div>
-                   <div className="status-indicator">
-                      <div className="dot"></div> REGISTRY ACTIVE
-                   </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      ) : (
-        <div className="no-records-cinematic glass-card">
-          <PackageSearch size={64} className="text-primary-low" />
-          <h2 className="playfair-title" style={{ fontSize: '2rem' }}>No Masterpieces Identified</h2>
-          <p>Try refining your institutional search parameters or integrate new entries via the Inventory Node.</p>
-          <button onClick={() => setSearchTerm('')} className="btn-ghost" style={{ marginTop: '24px' }}>Clear Search Node</button>
-        </div>
-      )}
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-registry-professional glass-card">
+            <div className="status-orbit">
+              <PackageSearch size={32} className="heartbeat-icon" />
+            </div>
+            <div className="status-text">
+              <h4>Asset Data Absent</h4>
+              <p>The institutional lookup failed to identify any masterpieces matching those parameters.</p>
+              <button onClick={() => setSearchTerm('')} className="btn-primary" style={{ marginTop: '24px', padding: '12px 24px' }}>Reset Node</button>
+            </div>
+          </div>
+        )}
+      </main>
 
+      {/* Pagination Instrumentation */}
       {pagination.pages > 1 && (
-        <div className="pagination-premium glass-card">
+        <footer className="pagination-instrumentation glass-card">
           <button 
             disabled={pagination.page === 1}
             onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
-            className="pagination-btn"
+            className="instr-btn"
           >
-            PREVIOUS
+            PREV NODE
           </button>
-          <div className="page-indicator">
-            Node {pagination.page} of {pagination.pages}
+          <div className="instr-summary">
+            REGISTRY PAGE <span>{pagination.page}</span> OF <span>{pagination.pages}</span>
           </div>
           <button 
             disabled={pagination.page === pagination.pages}
             onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
-            className="pagination-btn"
+            className="instr-btn"
           >
-            NEXT
+            NEXT NODE
           </button>
-        </div>
+        </footer>
       )}
     </motion.div>
   );

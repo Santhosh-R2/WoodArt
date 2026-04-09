@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import loginHero from '../../assets/login_hero.png';
 import './Auth.css';
 
+import api from '../../utils/api';
+
 const EmailLogin = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,13 +19,9 @@ const EmailLogin = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
+      const response = await api.post('/users/send-otp', { email });
 
-      const data = await response.json();
+      const data = response.data;
       if (data.success) {
         localStorage.setItem('auth_email', email);
         navigate('/auth/verify');
@@ -31,7 +29,7 @@ const EmailLogin = () => {
         setError(data.message || 'Identity synchronization failed');
       }
     } catch (err) {
-      setError('Network synchronization error');
+      setError(err.response?.data?.message || 'Network synchronization error');
     } finally {
       setIsLoading(false);
     }
