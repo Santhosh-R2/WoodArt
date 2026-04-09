@@ -173,7 +173,7 @@ exports.adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     // Standardizing on Institutional Admin Credentials
-    if (email === 'admin@wooddoor.com' && password === 'admin123') {
+    if (email === 'viswamcarving.com' && password === 'admin123') {
       const token = jwt.sign(
         { id: 'admin_institutional_master', role: 'admin' }, 
         process.env.JWT_SECRET || 'secret123', 

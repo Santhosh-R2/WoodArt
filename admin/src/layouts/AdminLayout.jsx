@@ -66,13 +66,13 @@ const AdminLayout = () => {
           </div>
 
           <div className="nav-right-orchestration">
-            <div className="executive-profile-node">
+            {/* <div className="executive-profile-node">
               <div className="profile-details">
                 <span className="p-name">Super Admin</span>
                 <span className="p-role">Portal Master</span>
-              </div>
-              <div className="profile-hex-avatar">SA</div>
-            </div>
+              </div> */}
+              {/* <div className="profile-hex-avatar">SA</div> */}
+            {/* </div> */}
             
             <button onClick={() => setShowLogoutModal(true)} className="executive-logout-btn" title="Sign Out">
               <LogOut size={18} />
