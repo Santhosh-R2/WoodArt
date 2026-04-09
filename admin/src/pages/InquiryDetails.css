@@ -84,8 +84,6 @@
   background: none;
   cursor: pointer;
   transition: all 0.3s;
-  position: relative;
-  top: 15px;
 }
 
 .dossier-back-btn:hover {
@@ -96,8 +94,6 @@
 .dossier-action-nexus {
   display: flex;
   gap: 12px;
-  position: relative;
-  top: 15px;
 }
 
 .dossier-content-scroller {
@@ -350,9 +346,13 @@
 }
 
 @media (max-width: 900px) {
-  .inquiry-dossier-container { height: auto; overflow: visible; }
+  .inquiry-dossier-container { 
+    height: auto; 
+    overflow: visible; 
+    padding-top: 110px; /* Clearance for fixed Executive Navbar */
+  }
   .dossier-split-view { flex-direction: column; }
-  .dossier-asset-anchor { height: 50vh; min-height: 350px; }
+  .dossier-asset-anchor { height: 50vh; min-height: 350px; border-radius: 24px; margin: 0 20px; }
   .dossier-instrument-pane { width: 100%; border-left: none; border-top: 1px solid var(--border-light); }
   
   .dossier-top-nav {
